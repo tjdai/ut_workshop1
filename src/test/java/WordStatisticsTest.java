@@ -18,5 +18,9 @@ public class WordStatisticsTest {
         WordStatistics wordStatistics = new WordStatistics();
 
         assertThat(wordStatistics.compute(testStr1)).isEqualTo("");
+        assertThat(wordStatistics.compute(testStr2)).isEqualTo("the 1");
+        assertThat(wordStatistics.compute(testStr3)).isEqualTo("the 1\nday 1");
+        assertThat(wordStatistics.compute(testStr4)).isEqualTo("the 1\nday 1\nis 1");
+        assertThat(wordStatistics.compute(testStr5)).isEqualTo("day 2\nthe 1");
     }
 }

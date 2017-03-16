@@ -5,25 +5,62 @@ import java.util.*;
  */
 public class WordStatistics {
 
-    private List<String> calculation(String allWord) {
-        List<String> wordList = new ArrayList<String>();
+    private  Map<String, Integer> splitCntWords(String allWords) {
+        // 分词
+        String[] wordArr =  allWords.split("\\s+");
 
-        return wordList;
+        // 统计
+        Map<String, Integer> map = new LinkedHashMap<String, Integer>();
+        for (int idx = 0; idx < wordArr.length; idx ++) {
+            if (true == map.containsKey(wordArr[idx])) {
+                map.put(wordArr[idx], map.get(wordArr[idx]) + 1);
+            }
+            else {
+                map.put(wordArr[idx], 1);
+            }
+        }
+
+        return map;
     }
 
-    private Map<String, Integer> sort(List<String> wordList) {
-        SortedMap<String, Integer> sortedMap = new TreeMap<String, Integer>();
+    private Map<String, Integer> sort(Map<String, Integer> map) {
 
-        return sortedMap;
+        Map<String, Integer> sortWords = new LinkedHashMap<String, Integer>();
+        List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
+
+        // 投放到链表，比较
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+
+        // 排序
+        for(Map.Entry<String, Integer> entry : list) {
+            sortWords.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortWords;
     }
 
-    private String output(SortedMap<String, Integer> sortList) {
-        return "";
-    }
+    public String compute(String allWords) {
 
+        if ("" == allWords) {
+            return "";
+        }
 
-    public String compute(String testStr1) {
+        Map<String, Integer> map = splitCntWords(allWords);
+        Map<String, Integer> treeMap = sort(map);
 
-        return "";
+        //输出
+        String output = new String("");
+        for (String key : treeMap.keySet()) {
+            if (!output.equals("")) {
+                output += "\n";
+            }
+            output += key + " " + treeMap.get(key);
+        }
+
+        return output;
     }
 }
